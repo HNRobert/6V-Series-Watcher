@@ -4,7 +4,7 @@ import os
 
 
 def setup_logging():
-    """Configure and set up the logging system for 6V-Watcher"""
+    """Configure and set up the logging system for 6V-Series-Watcher"""
     logger = logging.getLogger('6v_watcher')
     logger.setLevel(logging.INFO)
 
