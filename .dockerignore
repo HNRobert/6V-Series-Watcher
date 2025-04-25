@@ -1,0 +1,15 @@
+.git
+.github
+.vscode
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.env
+downloads/
+qbittorrent/
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+*.md

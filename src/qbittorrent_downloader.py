@@ -1,19 +1,17 @@
 import os
-from qbittorrentapi import Client
 from time import sleep
+
+from qbittorrentapi import Client
 
 result = []
 _existing_magnets_cache = []
-client = Client(host='http://localhost:8888', username='',
-                password='')
 
+# Get connection details from environment variables with defaults
+qb_host = os.environ.get('QB_HOST', 'http://localhost:8888')
+qb_username = os.environ.get('QB_USERNAME', '')
+qb_password = os.environ.get('QB_PASSWORD', '')
 
-def qbittorrent_open(path):
-    a = open(path, 'rb')
-    client.torrents_add(torrent_files=a, save_path='/home/hwm/torrents/')
-
-    sleep(1)
-    print(path, 'Success...')
+client = Client(host=qb_host, username=qb_username, password=qb_password)
 
 
 def get_existing_magnets():

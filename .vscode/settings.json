@@ -1,14 +1,19 @@
 {
     "cSpell.words": [
+        "appuser",
+        "beautifulsoup",
         "cellspacing",
         "htmlcov",
         "ipynb",
         "KHTML",
+        "lxml",
         "nosetests",
         "pycache",
+        "PYTHONPATH",
         "qbittorrent",
         "qbittorrentapi",
         "rmvb",
+        "tomllib",
         "venv"
     ]
 }
