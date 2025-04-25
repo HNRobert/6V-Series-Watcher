@@ -1,4 +1,5 @@
 import os
+import re
 from time import sleep
 
 from qbittorrentapi import Client
@@ -9,7 +10,8 @@ from logger_setup import logger
 module_logger = logger.getChild('qbittorrent')
 
 result = []
-_existing_magnets_cache = []
+# Store hashes instead of full magnet links for more efficient comparison
+_existing_magnets_hash_cache = []
 
 # Get connection details from environment variables with defaults
 qb_host = os.environ.get('QB_HOST', 'http://localhost:8888')
@@ -35,16 +37,22 @@ except Exception as e:
 
 
 def get_existing_magnets():
-    """Get all existing magnet links"""
+    """Get all existing magnet links as hash values"""
     try:
         torrents = client.torrents_info()
-        existing_magnets_cache = [torrent["magnet_uri"] for torrent in torrents]
-        module_logger.info(
-            f"Fetched {len(existing_magnets_cache)} existing magnet links")
-        return existing_magnets_cache
+        # Extract and store only the hash values
+        hashes = []
+        for torrent in torrents:
+            magnet = torrent.get("magnet_uri", "")
+            hash_value = extract_hash_from_magnet(magnet)
+            if hash_value:
+                hashes.append(hash_value)
+
+        module_logger.info(f"Fetched {len(hashes)} existing torrent hashes")
+        return hashes
     except Exception as e:
         module_logger.error(
-            f"Error getting existing magnets: {e}", exc_info=True)
+            f"Error getting existing torrents: {e}", exc_info=True)
         return []
 
 
@@ -80,13 +88,30 @@ def add_magnet(magnet, name, category, save_path):
 
 
 def is_torrent_exists(magnet):
-    """Check if torrent already exists"""
-    global _existing_magnets_cache
+    """Check if torrent already exists by comparing hash values"""
+    global _existing_magnets_hash_cache
 
-    # First check cache
-    if magnet in _existing_magnets_cache:
+    # Extract hash from the magnet link
+    magnet_hash = extract_hash_from_magnet(magnet)
+    if not magnet_hash:
+        module_logger.warning(f"Could not extract hash from magnet link")
+        return False
+
+    # First check hash cache directly
+    if magnet_hash in _existing_magnets_hash_cache:
         return True
 
     # If not in cache, refresh the cache
-    _existing_magnets_cache = get_existing_magnets()
-    return magnet in _existing_magnets_cache
+    _existing_magnets_hash_cache = get_existing_magnets()
+
+    # Check again with fresh cache
+    return magnet_hash in _existing_magnets_hash_cache
+
+
+def extract_hash_from_magnet(magnet):
+    """Extract hash from a magnet link"""
+    match = re.search(r'xt=urn:btih:([a-zA-Z0-9]+)', magnet)
+    if match:
+        return match.group(1).lower()
+    return None
+
