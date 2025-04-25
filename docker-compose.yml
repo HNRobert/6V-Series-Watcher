@@ -6,11 +6,12 @@ services:
     volumes:
       # Mount config directory for easy config updates
       - /volume2/docker/6v-watcher/config:/app/config
+      - /volume2/docker/6v-watcher/logs:/var/log/6v_watcher
     environment:
       # Set environment variables for qBittorrent connection
       - QB_HOST=${QB_HOST:-http://localhost:8888}
       - QB_USERNAME=${QB_USERNAME:-admin}
       - QB_PASSWORD=${QB_PASSWORD:-adminadmin}
-      # Add other environment variables as needed
+      - QB_VERIFY_CERT=False
+      - LOG_FILE=/var/log/6v_watcher/app.log
     network_mode: "host"
-  

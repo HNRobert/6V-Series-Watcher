@@ -10,10 +10,12 @@
         "nosetests",
         "pycache",
         "PYTHONPATH",
+        "PYTHONUNBUFFERED",
         "qbittorrent",
         "qbittorrentapi",
         "rmvb",
         "tomllib",
-        "venv"
+        "venv",
+        "WEBUI"
     ]
 }
