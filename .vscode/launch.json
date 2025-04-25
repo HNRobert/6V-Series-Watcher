@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run 6V-Watcher",
+            "name": "Run 6V-Series-Watcher",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/src/main.py",

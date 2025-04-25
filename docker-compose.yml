@@ -1,12 +1,12 @@
 services:
-  6v-watcher:
-    image: ghcr.io/hnrobert/6v-watcher:latest
-    container_name: 6v-watcher
+  6v-series-watcher:
+    image: ghcr.io/hnrobert/6v-series-watcher:latest
+    container_name: 6v-series-watcher
     restart: unless-stopped
     volumes:
       # Mount config directory for easy config updates
-      - /volume2/docker/6v-watcher/config:/app/config
-      - /volume2/docker/6v-watcher/logs:/var/log/6v_watcher
+      - /volume2/docker/6v-series-watcher/config:/app/config
+      - /volume2/docker/6v-series-watcher/logs:/var/log/6v_watcher
     environment:
       # Set environment variables for qBittorrent connection
       - QB_HOST=${QB_HOST:-http://localhost:8888}
