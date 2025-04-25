@@ -48,7 +48,7 @@ def get_existing_magnets():
             if hash_value:
                 hashes.append(hash_value)
 
-        module_logger.info(f"Fetched {len(hashes)} existing torrent hashes")
+        module_logger.debug(f"Fetched {len(hashes)} existing torrent hashes")
         return hashes
     except Exception as e:
         module_logger.error(
@@ -58,11 +58,6 @@ def get_existing_magnets():
 
 def add_magnet(magnet, name, category, save_path):
     """Add magnet link to qBittorrent, set torrent name, category, and save path"""
-
-    if is_torrent_exists(magnet):
-        module_logger.info(f"Magnet link already exists: {name}")
-        return False
-
     try:
         ret = client.torrents_add(
             urls=magnet,
@@ -73,7 +68,7 @@ def add_magnet(magnet, name, category, save_path):
             is_skip_checking=False
         )
 
-        if ret is not "Ok.":
+        if ret != "Ok.":
             module_logger.error(
                 f"Failed to add magnet link: {ret}", exc_info=True)
             return False

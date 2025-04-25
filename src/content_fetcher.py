@@ -40,7 +40,7 @@ def parse_html(html):
             if name and magnet:
                 final[name] = magnet
 
-        module_logger.info(f"Found {len(final)} items in parsed content")
+        module_logger.debug(f"Found {len(final)} items in parsed content")
         return final
     except Exception as e:
         module_logger.error(f"Error parsing HTML: {e}", exc_info=True)

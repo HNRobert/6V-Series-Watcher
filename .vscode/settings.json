@@ -15,6 +15,7 @@
         "qbittorrentapi",
         "rmvb",
         "tomllib",
+        "urandom",
         "venv",
         "WEBUI"
     ]
